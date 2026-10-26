@@ -36,14 +36,6 @@ class Figure(Enum):
 
 
 
-class Movement(Enum):
-    ROTATE = 'rotate'
-    MOVE_LEFT = 'mv_l'
-    MOVE_RIGHT = 'mv_r'
-    FALL = 'fall'
-
-
-
 class Tetramino:
 
     figure: Figure
@@ -154,9 +146,20 @@ class Map:
         for point in self.tetramino.coords:
             self.field[point.y][point.x] = ' '
         self.tetramino = None
+
+    def move_or_not_move(self,tetramino: Tetramino, virtual_tetramino: Tetramino) -> None:
+        for point in virtual_tetramino.coords:
+            if self.field[point.y][point.x] == BORDER_SYMBOL or self.field[point.y][point.x] == TETRAMINO_SYMBOL:
+                self.add_tetramino_to_the_field(tetramino)
+                return
+            else:
+                self.tetramino = virtual_tetramino
+                self.add_tetramino_to_the_field(virtual_tetramino)
+                return
+
     def rotate_tetramino(self) -> None:
-        self.drop_tetramino_from_field()
         tetramino = self.tetramino
+        self.drop_tetramino_from_field()
         orientation = None
         if tetramino.orientation == Orientation.TOP:
             orientation = Orientation.LEFT
@@ -172,31 +175,19 @@ class Map:
             x=tetramino.coords[0].x,
             y=tetramino.coords[0].y,
         )
-        for point in virtual_tetramino.coords:
-            if self.field[point.y][point.x] == BORDER_SYMBOL or self.field[point.y][point.x] == TETRAMINO_SYMBOL:
-                self.add_tetramino_to_the_field(tetramino)
-                return
-            else:
-                self.tetramino = virtual_tetramino
-                self.add_tetramino_to_the_field(virtual_tetramino)
+        self.move_or_not_move(tetramino,virtual_tetramino)
 
 
     def move_tetramino_left(self) -> None:
-        self.drop_tetramino_from_field()
         tetramino = self.tetramino
+        self.drop_tetramino_from_field()
         virtual_tetramino = Tetramino(
             figure=tetramino.figure,
             orientation=tetramino.orientation,
             x=(tetramino.coords[0].x - 1),
             y=tetramino.coords[0].y
         )
-        for point in virtual_tetramino.coords:
-            if self.field[point.y][point.x] == BORDER_SYMBOL or self.field[point.y][point.x] == TETRAMINO_SYMBOL:
-                self.add_tetramino_to_the_field(tetramino)
-                return
-            else:
-                self.tetramino = virtual_tetramino
-                self.add_tetramino_to_the_field(virtual_tetramino)
+        self.move_or_not_move(tetramino,virtual_tetramino)
 
     def move_tetramino_right(self) -> None:
         tetramino = self.tetramino
@@ -207,50 +198,20 @@ class Map:
             x=(tetramino.coords[0].x + 1),
             y=tetramino.coords[0].y
         )
-        for point in virtual_tetramino.coords:
-            if self.field[point.y][point.x] == BORDER_SYMBOL or self.field[point.y][point.x] == TETRAMINO_SYMBOL:
-                self.add_tetramino_to_the_field(tetramino)
-                return
-            else:
-                self.tetramino = virtual_tetramino
-                self.add_tetramino_to_the_field(virtual_tetramino)
+        self.move_or_not_move(tetramino,virtual_tetramino)
 
     def tetramino_fall(self) -> None:
-        self.drop_tetramino_from_field()
         tetramino = self.tetramino
+        self.drop_tetramino_from_field()
         virtual_tetramino = Tetramino(
             figure=tetramino.figure,
             orientation=tetramino.orientation,
             x=tetramino.coords[0].x,
             y=(tetramino.coords[0].y + 1)
         )
-        for point in virtual_tetramino.coords:
-            if self.field[point.y][point.x] == BORDER_SYMBOL or self.field[point.y][point.x] == TETRAMINO_SYMBOL:
-                self.add_tetramino_to_the_field(tetramino)
-                return
-            else:
-                self.tetramino = virtual_tetramino
-                self.add_tetramino_to_the_field(virtual_tetramino)
-
+        self.move_or_not_move(tetramino,virtual_tetramino)
+    
     def draw(self) -> None:
         for i in self.field:
             row = ''.join(i)
             print(row)    
-
-
-m = Map()
-
-
-t = Tetramino(Figure.T,Orientation.TOP,6,6)
-
-
-
-m.add_tetramino_to_the_field(t)
-
-
-m.draw()
-m.move_tetramino_right()
-m.move_tetramino_right()
-m.move_tetramino_right()
-m.move_tetramino_right()
-m.draw()
