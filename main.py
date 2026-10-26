@@ -80,43 +80,43 @@ class Tetramino:
             case Figure.S:
                 match orientation:
                     case Orientation.TOP:
-                        self.coords = [Point(),Point(),Point(),Point()]
+                        self.coords = [Point(x,y),Point(x+1,y),Point(x,y+1),Point(x-1,y-1)]
                     case Orientation.LEFT:
-                        self.coords = [Point(),Point(),Point(),Point()]
+                        self.coords = [Point(x,y),Point(x-1,y-1),Point(x-1,y),Point(x,y+1)]
                     case Orientation.BOTTOM:
-                        self.coords = [Point(),Point(),Point(),Point()]
+                        self.coords = [Point(x,y),Point(x+1,y),Point(x,y+1),Point(x-1,y-1)]
                     case Orientation.RIGHT:
-                        self.coords = [Point(),Point(),Point(),Point()]
+                        self.coords = [Point(x,y),Point(x-1,y-1),Point(x-1,y),Point(x,y+1)]
             case Figure.Z:
                 match orientation:
                     case Orientation.TOP:
-                        self.coords = [Point(),Point(),Point(),Point()]
+                        self.coords = [Point(x,y),Point(x-1,y),Point(x,y+1),Point(x+1,y+1)]
                     case Orientation.LEFT:
-                        self.coords = [Point(),Point(),Point(),Point()]
+                        self.coords = [Point(x,y),Point(x,y-1),Point(x-1,y),Point(x-1,y+1)]
                     case Orientation.BOTTOM:
-                        self.coords = [Point(),Point(),Point(),Point()]
+                        self.coords = [Point(x,y),Point(x-1,y),Point(x,y+1),Point(x+1,y+1)]
                     case Orientation.RIGHT:
-                        self.coords = [Point(),Point(),Point(),Point()]
+                        self.coords = [Point(x,y),Point(x,y-1),Point(x-1,y),Point(x-1,y+1)]
             case Figure.L:
                 match orientation:
                     case Orientation.TOP:
-                        self.coords = [Point(),Point(),Point(),Point()]
+                        self.coords = [Point(x,y),Point(x,y-1),Point(x,y+1),Point(x+1,y+1)]
                     case Orientation.LEFT:
-                        self.coords = [Point(),Point(),Point(),Point()]
+                        self.coords = [Point(x,y),Point(x+1,y),Point(x-1,y),Point(x-1,y+1)]
                     case Orientation.BOTTOM:
-                        self.coords = [Point(),Point(),Point(),Point()]
+                        self.coords = [Point(x,y),Point(x-1,y-1),Point(x,y-1),Point(x,y+1)]
                     case Orientation.RIGHT:
-                        self.coords = [Point(),Point(),Point(),Point()]
+                        self.coords = [Point(x,y),Point(x+1,y-1),Point(x+1,y),Point(x-1,y)]
             case Figure.J:
                 match orientation:
                     case Orientation.TOP:
-                        self.coords = [Point(),Point(),Point(),Point()]
+                        self.coords = [Point(x,y),Point(x,y-1),Point(x,y+1),Point(x-1,y+1)]
                     case Orientation.LEFT:
-                        self.coords = [Point(),Point(),Point(),Point()]
+                        self.coords = [Point(x,y),Point(x-1,y-1),Point(x-1,y),Point(x+1,y)]
                     case Orientation.BOTTOM:
-                        self.coords = [Point(),Point(),Point(),Point()]
+                        self.coords = [Point(x,y),Point(x,y+1),Point(x,y-1),Point(x+1,y-1)]
                     case Orientation.RIGHT:
-                        self.coords = [Point(),Point(),Point(),Point()]
+                        self.coords = [Point(x,y),Point(x-1,y),Point(x+1,y),Point(x+1,y+1)]
 
 
 
