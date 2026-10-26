@@ -1,6 +1,41 @@
+from enum import Enum
+
+
+
 WIDTH = 15
 HEIGHT = 20
 BORDER_SYMBOL = '#'
+
+
+class Point:
+    x: int
+    y: int
+    def __init__(self, x:int, y:int):
+        self.x = x
+        self.y = y
+
+
+class Orientation(Enum):
+    TOP = 'top'
+    LEFT = 'left'
+    BOTTOM = 'bottom'
+    RIGHT = 'right'
+
+
+
+class Figure(Enum):
+    I = 'I'
+    O = 'O'
+    T = 'T'
+    S = 'S'
+    Z = 'Z'
+    L = 'L'
+    J = 'J'
+
+
+
+class Tetramino:
+    pass
 
 
 
@@ -11,7 +46,7 @@ class Map:
     field: list[str]
     border: str
 
-    def __init__(self,width=WIDTH,height=HEIGHT,border=BORDER_SYMBOL):
+    def __init__(self,width:int = WIDTH, height:int = HEIGHT, border:str = BORDER_SYMBOL):
         self.width = width
         self.height = height
         self.border = border
@@ -25,5 +60,3 @@ class Map:
     def draw(self):
         for column in self.field:
             print(column)
-
-
