@@ -7,6 +7,8 @@ HEIGHT = 20
 BORDER_SYMBOL = '#'
 TETRAMINO_SYMBOL = '*'
 
+
+
 class Point:
     x: int
     y: int
@@ -31,6 +33,14 @@ class Figure(Enum):
     Z = 'Z'
     L = 'L'
     J = 'J'
+
+
+
+class Movement(Enum):
+    ROTATE = 'rotate'
+    MOVE_LEFT = 'mv_l'
+    MOVE_RIGHT = 'mv_r'
+    FALL = 'fall'
 
 
 
@@ -170,3 +180,5 @@ class Map:
                 self.field[point.y][point.x] = TETRAMINO_SYMBOL
         for i in self.field:
             print(i)
+
+    
