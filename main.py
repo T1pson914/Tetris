@@ -53,38 +53,38 @@ class Tetramino:
     def __init__(self,figure: Figure, orientation: Orientation, x: int, y: int) -> None:
         self.figure = figure
         self.orientation = orientation
-        
+
         match figure:
             case Figure.I:
                 match orientation:
                     case Orientation.TOP:
-                        self.coords = [Point(),Point(),Point(),Point()]
+                        self.coords = [Point(x,y),Point(x,y+1),Point(x,y+2),Point(x,y-1)]
                     case Orientation.LEFT:
-                        self.coords = [Point(),Point(),Point(),Point()]
+                        self.coords = [Point(x,y),Point(x-1,y),Point(x+1,y),Point(x+2,y)]
                     case Orientation.BOTTOM:
-                        self.coords = [Point(),Point(),Point(),Point()]
+                        self.coords = [Point(x,y),Point(x,y+1),Point(x,y+2),Point(x,y-1)]
                     case Orientation.RIGHT:
-                        self.coords = [Point(),Point(),Point(),Point()]
+                        self.coords = [Point(x,y),Point(x-1,y),Point(x+1,y),Point(x+2,y)]
             case Figure.O:
                 match orientation:
                     case Orientation.TOP:
-                        self.coords = [Point(),Point(),Point(),Point()]
+                        self.coords = [Point(x,y),Point(x-1,y),Point(x-1,y-1),Point(x,y-1)]
                     case Orientation.LEFT:
-                        self.coords = [Point(),Point(),Point(),Point()]
+                        self.coords = [Point(x,y),Point(x-1,y),Point(x-1,y-1),Point(x,y-1)]
                     case Orientation.BOTTOM:
-                        self.coords = [Point(),Point(),Point(),Point()]
+                        self.coords = [Point(x,y),Point(x-1,y),Point(x-1,y-1),Point(x,y-1)]
                     case Orientation.RIGHT:
-                        self.coords = [Point(),Point(),Point(),Point()]
+                        self.coords = [Point(x,y),Point(x-1,y),Point(x-1,y-1),Point(x,y-1)]
             case Figure.T:
                 match orientation:
                     case Orientation.TOP:
-                        self.coords = [Point(),Point(),Point(),Point()]
+                        self.coords = [Point(x,y),Point(x-1,y),Point(x+1,y),Point(x,y+1)]
                     case Orientation.LEFT:
-                        self.coords = [Point(),Point(),Point(),Point()]
+                        self.coords = [Point(x,y),Point(x-1,y),Point(x,y-1),Point(x,y+1)]
                     case Orientation.BOTTOM:
-                        self.coords = [Point(),Point(),Point(),Point()]
+                        self.coords = [Point(x,y),Point(x-1,y),Point(x+1,y),Point(x,y-1)]
                     case Orientation.RIGHT:
-                        self.coords = [Point(),Point(),Point(),Point()]
+                        self.coords = [Point(x,y),Point(x+1,y),Point(x,y-1),Point(x,y+1)]
             case Figure.S:
                 match orientation:
                     case Orientation.TOP:
@@ -133,7 +133,7 @@ class Map:
     width: int
     height: int
     field: list[str]
-    tetramino: Tetramino
+    tetramino: Tetramino | None
 
     def __init__(self,width:int = WIDTH, height:int = HEIGHT) -> None:
         self.width = width
@@ -141,9 +141,9 @@ class Map:
         self.field = []
         for i in range(height):
             if i==0 or i==height-1:
-                self.field.append(BORDER_SYMBOL * width)
+                self.field.append([BORDER_SYMBOL] * self.width)
             else:
-                self.field.append(BORDER_SYMBOL + " " * (width-2) + BORDER_SYMBOL)
+                self.field.append([BORDER_SYMBOL] + [" "] * (width-2) + [BORDER_SYMBOL])
    
     def add_tetramino_to_the_field(self, tetramino: Tetramino) -> None:
         self.tetramino = tetramino
@@ -151,10 +151,9 @@ class Map:
             self.field[point.y][point.x] = TETRAMINO_SYMBOL
 
     def drop_tetramino_from_field(self) -> None:
-        if self.tetramino:
-            for point in self.tetramino:
-                self.field[point.y][point.x] = ' '
-
+        for point in self.tetramino.coords:
+            self.field[point.y][point.x] = ' '
+        self.tetramino = None
     def rotate_tetramino(self) -> None:
         self.drop_tetramino_from_field()
         tetramino = self.tetramino
@@ -170,8 +169,8 @@ class Map:
         virtual_tetramino = Tetramino(
             figure=tetramino.figure,
             orientation=orientation,
-            x=tetramino.x,
-            y=tetramino.y,
+            x=tetramino.coords[0].x,
+            y=tetramino.coords[0].y,
         )
         for point in virtual_tetramino.coords:
             if self.field[point.y][point.x] == BORDER_SYMBOL or self.field[point.y][point.x] == TETRAMINO_SYMBOL:
@@ -188,8 +187,8 @@ class Map:
         virtual_tetramino = Tetramino(
             figure=tetramino.figure,
             orientation=tetramino.orientation,
-            x=(tetramino.x - 1),
-            y=tetramino.y
+            x=(tetramino.coords[0].x - 1),
+            y=tetramino.coords[0].y
         )
         for point in virtual_tetramino.coords:
             if self.field[point.y][point.x] == BORDER_SYMBOL or self.field[point.y][point.x] == TETRAMINO_SYMBOL:
@@ -200,13 +199,13 @@ class Map:
                 self.add_tetramino_to_the_field(virtual_tetramino)
 
     def move_tetramino_right(self) -> None:
-        self.drop_tetramino_from_field()
         tetramino = self.tetramino
+        self.drop_tetramino_from_field()
         virtual_tetramino = Tetramino(
             figure=tetramino.figure,
             orientation=tetramino.orientation,
-            x=(tetramino.x + 1),
-            y=tetramino.y
+            x=(tetramino.coords[0].x + 1),
+            y=tetramino.coords[0].y
         )
         for point in virtual_tetramino.coords:
             if self.field[point.y][point.x] == BORDER_SYMBOL or self.field[point.y][point.x] == TETRAMINO_SYMBOL:
@@ -222,8 +221,8 @@ class Map:
         virtual_tetramino = Tetramino(
             figure=tetramino.figure,
             orientation=tetramino.orientation,
-            x=tetramino.x,
-            y=(tetramino.y + 1)
+            x=tetramino.coords[0].x,
+            y=(tetramino.coords[0].y + 1)
         )
         for point in virtual_tetramino.coords:
             if self.field[point.y][point.x] == BORDER_SYMBOL or self.field[point.y][point.x] == TETRAMINO_SYMBOL:
@@ -235,4 +234,23 @@ class Map:
 
     def draw(self) -> None:
         for i in self.field:
-            print(i)    
+            row = ''.join(i)
+            print(row)    
+
+
+m = Map()
+
+
+t = Tetramino(Figure.T,Orientation.TOP,6,6)
+
+
+
+m.add_tetramino_to_the_field(t)
+
+
+m.draw()
+m.move_tetramino_right()
+m.move_tetramino_right()
+m.move_tetramino_right()
+m.move_tetramino_right()
+m.draw()
