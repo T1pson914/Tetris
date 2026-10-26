@@ -1,7 +1,8 @@
+import time
 from enum import Enum
 
 
-
+GAME:bool = True
 WIDTH:int = 15
 HEIGHT:int = 20
 BORDER_SYMBOL:str = '#'
@@ -143,19 +144,20 @@ class Map:
             self.field[point.y][point.x] = TETRAMINO_SYMBOL
 
     def drop_tetramino_from_field(self) -> None:
-        for point in self.tetramino.coords:
-            self.field[point.y][point.x] = ' '
-        self.tetramino = None
+        if self.tetramino:
+            for point in self.tetramino.coords:
+                self.field[point.y][point.x] = ' '
+            self.tetramino = None
 
-    def move_or_not_move(self,tetramino: Tetramino, virtual_tetramino: Tetramino) -> None:
+    def move_or_not_move(self,tetramino: Tetramino, virtual_tetramino: Tetramino) -> bool:
         for point in virtual_tetramino.coords:
             if self.field[point.y][point.x] == BORDER_SYMBOL or self.field[point.y][point.x] == TETRAMINO_SYMBOL:
                 self.add_tetramino_to_the_field(tetramino)
-                return
-            else:
-                self.tetramino = virtual_tetramino
-                self.add_tetramino_to_the_field(virtual_tetramino)
-                return
+                return False
+            
+        self.tetramino = virtual_tetramino
+        self.add_tetramino_to_the_field(virtual_tetramino)
+        return True
 
     def rotate_tetramino(self) -> None:
         tetramino = self.tetramino
@@ -200,7 +202,18 @@ class Map:
         )
         self.move_or_not_move(tetramino,virtual_tetramino)
 
+    def clear_full_row(self) -> None:
+        for y in range(1,self.height-1):
+            arr = []
+            for x in range(1,self.width-1):
+                if self.field[y][x] == TETRAMINO_SYMBOL:
+                    arr.append(1)
+            if len(arr)==self.width-2:
+                self.field[y] = [BORDER_SYMBOL] + [" "] * (self.width-2) + [BORDER_SYMBOL]
+
     def tetramino_fall(self) -> None:
+        if not self.tetramino:
+            return
         tetramino = self.tetramino
         self.drop_tetramino_from_field()
         virtual_tetramino = Tetramino(
@@ -209,9 +222,11 @@ class Map:
             x=tetramino.coords[0].x,
             y=(tetramino.coords[0].y + 1)
         )
-        self.move_or_not_move(tetramino,virtual_tetramino)
-    
+        can_move = self.move_or_not_move(tetramino,virtual_tetramino)
+        if not can_move:
+            self.tetramino = None
+
     def draw(self) -> None:
         for i in self.field:
             row = ''.join(i)
-            print(row)    
+            print(row)
