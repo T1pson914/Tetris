@@ -35,8 +35,86 @@ class Figure(Enum):
 
 
 class Tetramino:
-    pass
 
+    figure: Figure
+    orientation: Orientation
+    coords: list[Point]
+
+    def __init__(self,figure: Figure, orientation: Orientation, x: int, y: int):
+        self.figure = figure
+        self.orientation = orientation
+        
+        match figure:
+            case Figure.I:
+                match orientation:
+                    case Orientation.TOP:
+                        pass
+                    case Orientation.LEFT:
+                        pass
+                    case Orientation.BOTTOM:
+                        pass
+                    case Orientation.RIGHT:
+                        pass
+            case Figure.O:
+                match orientation:
+                    case Orientation.TOP:
+                        pass
+                    case Orientation.LEFT:
+                        pass
+                    case Orientation.BOTTOM:
+                        pass
+                    case Orientation.RIGHT:
+                        pass
+            case Figure.T:
+                match orientation:
+                    case Orientation.TOP:
+                        pass
+                    case Orientation.LEFT:
+                        pass
+                    case Orientation.BOTTOM:
+                        pass
+                    case Orientation.RIGHT:
+                        pass
+            case Figure.S:
+                match orientation:
+                    case Orientation.TOP:
+                        pass
+                    case Orientation.LEFT:
+                        pass
+                    case Orientation.BOTTOM:
+                        pass
+                    case Orientation.RIGHT:
+                        pass
+            case Figure.Z:
+                match orientation:
+                    case Orientation.TOP:
+                        pass
+                    case Orientation.LEFT:
+                        pass
+                    case Orientation.BOTTOM:
+                        pass
+                    case Orientation.RIGHT:
+                        pass
+            case Figure.L:
+                match orientation:
+                    case Orientation.TOP:
+                        pass
+                    case Orientation.LEFT:
+                        pass
+                    case Orientation.BOTTOM:
+                        pass
+                    case Orientation.RIGHT:
+                        pass
+            case Figure.J:
+                match orientation:
+                    case Orientation.TOP:
+                        pass
+                    case Orientation.LEFT:
+                        pass
+                    case Orientation.BOTTOM:
+                        pass
+                    case Orientation.RIGHT:
+                        pass
 
 
 class Map:
